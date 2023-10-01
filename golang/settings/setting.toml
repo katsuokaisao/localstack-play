@@ -1,0 +1,5 @@
+[AWS]
+    Endpoint='http://localstack:4566'
+    AccessKeyID='test'
+    SecretAccessKey='test'
+    S3_BUCKET='test'
