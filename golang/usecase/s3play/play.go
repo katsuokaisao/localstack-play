@@ -23,15 +23,22 @@ func NewS3PlayUseCase(
 }
 
 func (u *s3PlayUseCase) Play() {
-	if err := u.S3Repository.CreateBucket("test"); err != nil {
-		log.Printf("failed to create bucket: %v\n", err)
-	} else {
-		log.Println("bucket created")
-	}
+	var (
+		exists bool
+		err    error
+	)
 
-	if exists, err := u.S3Repository.BucketExists("test"); err != nil {
+	exists, err = u.S3Repository.BucketExists("test")
+	if err != nil {
 		log.Printf("failed to check bucket existence: %v\n", err)
-	} else {
-		log.Printf("bucket exists: %v\n", exists)
+	}
+	log.Printf("bucket exists: %v\n", exists)
+
+	if !exists {
+		if err := u.S3Repository.CreateBucket("test"); err != nil {
+			log.Printf("failed to create bucket: %v\n", err)
+		} else {
+			log.Println("bucket created")
+		}
 	}
 }
