@@ -1,8 +1,9 @@
 package s3play
 
 import (
+	"log"
+
 	"github.com/katsuokaisao/localstack/domain/repository"
-	"github.com/rs/zerolog/log"
 )
 
 type S3PlayUseCase interface {
@@ -23,6 +24,14 @@ func NewS3PlayUseCase(
 
 func (u *s3PlayUseCase) Play() {
 	if err := u.S3Repository.CreateBucket("test"); err != nil {
-		log.Err(err)
+		log.Printf("failed to create bucket: %v\n", err)
+	} else {
+		log.Println("bucket created")
+	}
+
+	if exists, err := u.S3Repository.BucketExists("test"); err != nil {
+		log.Printf("failed to check bucket existence: %v\n", err)
+	} else {
+		log.Printf("bucket exists: %v\n", exists)
 	}
 }
